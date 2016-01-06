@@ -49,6 +49,7 @@ func (c *Upgrade) Run(args []string) int {
 type ServerConfig struct {
 	Server           bool   `json:"server,omitempty"`
 	Bootstrap        bool   `json:"bootstrap,omitempty"`
+	Bind             string `json:"bind_addr,omitempty"`
 	DataDir          string `json:"data_dir,omitempty"`
 	Datacenter       string `json:"datacenter,omitempty"`
 	ACLMasterToken   string `json:"acl_master_token,omitempty"`
@@ -77,6 +78,7 @@ func (c *Upgrade) upgrade(versions []string) error {
 	content, err := json.Marshal(ServerConfig{
 		Server:           true,
 		Bootstrap:        true,
+		Bind:             "127.0.0.1",
 		DataDir:          dir,
 		Datacenter:       "dc1",
 		ACLMasterToken:   "root",
