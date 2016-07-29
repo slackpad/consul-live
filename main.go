@@ -9,6 +9,8 @@ import (
 )
 
 func main() {
+	// This helps us find our logs vs. those from Consul running under our
+	// control.
 	log.SetPrefix("@@@ ==> ")
 
 	c := cli.NewCLI("consul-live", "0.0.1")
