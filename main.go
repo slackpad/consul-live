@@ -14,6 +14,7 @@ func main() {
 	c := cli.NewCLI("consul-live", "0.0.1")
 	c.Args = os.Args[1:]
 	c.Commands = map[string]cli.CommandFactory{
+		"load":    tester.LoadCommandFactory,
 		"upgrade": tester.UpgradeCommandFactory,
 	}
 

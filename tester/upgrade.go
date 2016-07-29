@@ -30,7 +30,7 @@ Usage consul-live upgrade base version1 ... versionN
 }
 
 func (c *Upgrade) Synopsis() string {
-	return c.Help()
+	return "Runs Consul through a given series of in-place upgrades"
 }
 
 func (c *Upgrade) Run(args []string) int {
