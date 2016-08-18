@@ -9,9 +9,6 @@ makes sure all the state store data makes it between the different versions.
 usage: consul-live [--version] [--help] <command> [<args>]
 
 Available commands are:
-    upgrade    Usage consul-live upgrade base version1 ... versionN
-
-  Starts Consul using the base executable then shuts it down and upgrades in
-  place using the supplied version executables. The base version is populated
-  with some test data and that data is verified after each upgrade.
+    load       Loads the local Consul agent with realistic usage
+    upgrade    Runs Consul through a given series of in-place upgrades
 ```
