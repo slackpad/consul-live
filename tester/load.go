@@ -39,7 +39,7 @@ func (c *Load) Run(args []string) int {
 	var rate int
 	cmdFlags := flag.NewFlagSet("load", flag.ContinueOnError)
 	cmdFlags.Usage = func() { log.Println(c.Help()) }
-	cmdFlags.IntVar(&actors, "actors", 1, "")
+	cmdFlags.IntVar(&actors, "actors", 5, "")
 	cmdFlags.IntVar(&rate, "rate", 10, "")
 	if err := cmdFlags.Parse(args); err != nil {
 		return 1
@@ -56,18 +56,32 @@ func (c *Load) Run(args []string) int {
 
 	var wg sync.WaitGroup
 	for i := 0; i < actors; i++ {
-		client, err := api.NewClient(api.DefaultConfig())
-		if err != nil {
-			log.Println("Could not make client: %s", err.Error())
-			return 1
-		}
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+
+			client, err := api.NewClient(api.DefaultConfig())
+			if err != nil {
+				log.Println("Could not make client: %s", err.Error())
+				return
+			}
+			if err := fast(client, rate); err != nil {
+				log.Println(err.Error())
+			}
+		}()
 
 		wg.Add(1)
 		go func() {
-			if err := load(client, rate); err != nil {
+			defer wg.Done()
+
+			client, err := api.NewClient(api.DefaultConfig())
+			if err != nil {
+				log.Println("Could not make client: %s", err.Error())
+				return
+			}
+			if err := slow(client, rate); err != nil {
 				log.Println(err.Error())
 			}
-			wg.Done()
 		}()
 	}
 	wg.Wait()
@@ -181,11 +195,29 @@ func opGlobalServiceDNSLookup(client *api.Client) error {
 	return nil
 }
 
-func load(client *api.Client, rate int) error {
+func slow(client *api.Client, rate int) error {
 	ops := []func(*api.Client) error{
-		opKeyCRUD,
 		opGlobalLock,
 		opGlobalServiceRegister,
+	}
+
+	minTimePerOp := time.Second / time.Duration(rate)
+	for {
+		start := time.Now()
+		opIndex := rand.Intn(len(ops))
+		if err := ops[opIndex](client); err != nil {
+			return err
+		}
+		elapsed := time.Now().Sub(start)
+		time.Sleep(minTimePerOp - elapsed)
+	}
+
+	return nil
+}
+
+func fast(client *api.Client, rate int) error {
+	ops := []func(*api.Client) error{
+		opKeyCRUD,
 		opGlobalServiceDNSLookup,
 	}
 
