@@ -113,6 +113,9 @@ func opKeyCRUD(client *api.Client) error {
 	if err != nil {
 		return err
 	}
+	if pair == nil {
+		return fmt.Errorf("key %q is missing", inner)
+	}
 	if !bytes.Equal(pair.Value, value) {
 		return fmt.Errorf("bad value: %#v", *pair)
 	}
@@ -127,13 +130,11 @@ func opKeyCRUD(client *api.Client) error {
 	if err != nil {
 		return err
 	}
+	if pair == nil {
+		return fmt.Errorf("key %q is missing", inner)
+	}
 	if !bytes.Equal(pair.Value, value) {
 		return fmt.Errorf("bad value: %#v", *pair)
-	}
-
-	_, err = kv.DeleteTree(root, nil)
-	if err != nil {
-		return err
 	}
 
 	return nil
@@ -206,7 +207,7 @@ func slow(client *api.Client, rate int) error {
 		start := time.Now()
 		opIndex := rand.Intn(len(ops))
 		if err := ops[opIndex](client); err != nil {
-			return err
+			log.Printf("Op error: %s", err.Error())
 		}
 		elapsed := time.Now().Sub(start)
 		time.Sleep(minTimePerOp - elapsed)
@@ -226,7 +227,7 @@ func fast(client *api.Client, rate int) error {
 		start := time.Now()
 		opIndex := rand.Intn(len(ops))
 		if err := ops[opIndex](client); err != nil {
-			return err
+			log.Printf("Op error: %s", err.Error())
 		}
 		elapsed := time.Now().Sub(start)
 		time.Sleep(minTimePerOp - elapsed)
