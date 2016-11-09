@@ -137,6 +137,11 @@ func opKeyCRUD(client *api.Client) error {
 		return fmt.Errorf("bad value: %#v", *pair)
 	}
 
+	_, err = kv.DeleteTree(root, nil)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
