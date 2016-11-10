@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"log"
 	"math/rand"
 	"strings"
@@ -209,9 +211,12 @@ func opSnapshot(client *api.Client) error {
 	if err != nil {
 		return err
 	}
-	if err := snap.Close(); err != nil {
+	defer snap.Close()
+
+	if _, err := io.Copy(ioutil.Discard, snap); err != nil {
 		return err
 	}
+
 	return nil
 }
 
