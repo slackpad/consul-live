@@ -201,10 +201,25 @@ func opGlobalServiceDNSLookup(client *api.Client) error {
 	return nil
 }
 
+func opSnapshot(client *api.Client) error {
+	q := &api.QueryOptions{
+		AllowStale: true,
+	}
+	snap, _, err := client.Snapshot().Save(q)
+	if err != nil {
+		return err
+	}
+	if err := snap.Close(); err != nil {
+		return err
+	}
+	return nil
+}
+
 func slow(client *api.Client, rate int) error {
 	ops := []func(*api.Client) error{
 		opGlobalLock,
 		opGlobalServiceRegister,
+		opSnapshot,
 	}
 
 	minTimePerOp := time.Second / time.Duration(rate)
