@@ -2,12 +2,15 @@ package tester
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
+	"path"
 	"strings"
 
 	"github.com/hashicorp/consul/api"
+	"github.com/hashicorp/go-getter"
 	"github.com/mitchellh/cli"
 )
 
@@ -59,9 +62,6 @@ type ServerConfig struct {
 }
 
 func (c *Upgrade) upgrade(versions []string) error {
-	base := versions[0]
-	versions = versions[1:]
-
 	var dir string
 	var err error
 	dir, err = ioutil.TempDir("", "consul")
@@ -69,6 +69,21 @@ func (c *Upgrade) upgrade(versions []string) error {
 		return err
 	}
 	defer os.RemoveAll(dir)
+
+	from := path.Join(dir, "consul")
+	for i, version := range versions {
+		if err := getter.GetAny(dir, version); err != nil {
+			return err
+		}
+		to := path.Join(dir, fmt.Sprintf("version-%d", i))
+		if err := os.Rename(from, to); err != nil {
+			return err
+		}
+		versions[i] = to
+	}
+
+	base := versions[0]
+	versions = versions[1:]
 
 	config, err := ioutil.TempFile(dir, "config")
 	if err != nil {
