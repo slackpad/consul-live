@@ -27,7 +27,7 @@ type Load struct {
 
 func (c *Load) Help() string {
 	helpText := `
-Usage consul-live load -actors=n -rate=rate
+Usage consul-live load -actors=<n> -rate=<rate> -token=<token>
 `
 	return strings.TrimSpace(helpText)
 }
@@ -39,10 +39,12 @@ func (c *Load) Synopsis() string {
 func (c *Load) Run(args []string) int {
 	var actors int
 	var rate int
+	var token string
 	cmdFlags := flag.NewFlagSet("load", flag.ContinueOnError)
 	cmdFlags.Usage = func() { log.Println(c.Help()) }
-	cmdFlags.IntVar(&actors, "actors", 5, "")
+	cmdFlags.IntVar(&actors, "actors", 1, "")
 	cmdFlags.IntVar(&rate, "rate", 10, "")
+	cmdFlags.StringVar(&token, "token", "", "")
 	if err := cmdFlags.Parse(args); err != nil {
 		return 1
 	}
@@ -56,13 +58,19 @@ func (c *Load) Run(args []string) int {
 		return 1
 	}
 
+	config := func() *api.Config {
+		c := api.DefaultConfig()
+		c.Token = token
+		return c
+	}
+
 	var wg sync.WaitGroup
 	for i := 0; i < actors; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
 
-			client, err := api.NewClient(api.DefaultConfig())
+			client, err := api.NewClient(config())
 			if err != nil {
 				log.Println("Could not make client: %s", err.Error())
 				return
@@ -76,7 +84,7 @@ func (c *Load) Run(args []string) int {
 		go func() {
 			defer wg.Done()
 
-			client, err := api.NewClient(api.DefaultConfig())
+			client, err := api.NewClient(config())
 			if err != nil {
 				log.Println("Could not make client: %s", err.Error())
 				return
