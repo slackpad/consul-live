@@ -45,7 +45,9 @@ func (c *Consul) Shutdown() error {
 }
 
 func (c *Consul) WaitForLeader() error {
-	client, err := api.NewClient(api.DefaultConfig())
+	config := api.DefaultConfig()
+	config.Address = "172.17.0.2:8500"
+	client, err := api.NewClient(config)
 	if err != nil {
 		return err
 	}

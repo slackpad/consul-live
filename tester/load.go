@@ -60,9 +60,12 @@ func (c *Load) Run(args []string) int {
 
 	config := func() *api.Config {
 		c := api.DefaultConfig()
+		c.Address = "172.17.0.2:8500"
 		c.Token = token
 		return c
 	}
+
+	fmt.Printf("Got config struct %+v", config())
 
 	var wg sync.WaitGroup
 	for i := 0; i < actors; i++ {

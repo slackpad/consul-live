@@ -137,7 +137,9 @@ func (c *Upgrade) upgrade(versions []string) error {
 
 	// Populate it with some realistic data, enough to kick out a snapshot.
 	log.Println("Populating with initial state store data...")
-	client, err := api.NewClient(api.DefaultConfig())
+	defaultConfig := api.DefaultConfig()
+	defaultConfig.Address = "172.17.0.2:8500"
+	client, err := api.NewClient(defaultConfig)
 	if err != nil {
 		return err
 	}
