@@ -99,62 +99,6 @@ func (c *Load) Run(args []string) int {
 	return 0
 }
 
-func opKeyCRUD(client *api.Client) error {
-	kv := client.KV()
-
-	root, err := uuid.GenerateUUID()
-	if err != nil {
-		return err
-	}
-
-	_, err = kv.Put(&api.KVPair{Key: root}, nil)
-	if err != nil {
-		return err
-	}
-
-	inner := fmt.Sprintf("%s/inner", root)
-	value := []byte("hello")
-	_, err = kv.Put(&api.KVPair{Key: inner, Value: value}, nil)
-	if err != nil {
-		return err
-	}
-
-	pair, _, err := kv.Get(inner, nil)
-	if err != nil {
-		return err
-	}
-	if pair == nil {
-		return fmt.Errorf("key %q is missing", inner)
-	}
-	if !bytes.Equal(pair.Value, value) {
-		return fmt.Errorf("bad value: %#v", *pair)
-	}
-
-	value = []byte("world")
-	_, err = kv.Put(&api.KVPair{Key: inner, Value: value}, nil)
-	if err != nil {
-		return err
-	}
-
-	pair, _, err = kv.Get(inner, nil)
-	if err != nil {
-		return err
-	}
-	if pair == nil {
-		return fmt.Errorf("key %q is missing", inner)
-	}
-	if !bytes.Equal(pair.Value, value) {
-		return fmt.Errorf("bad value: %#v", *pair)
-	}
-
-	_, err = kv.DeleteTree(root, nil)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func opGlobalLock(client *api.Client) error {
 	opts := &api.LockOptions{
 		Key:          "global",
@@ -211,6 +155,99 @@ func opGlobalServiceDNSLookup(client *api.Client) error {
 	return nil
 }
 
+func opKeyCRUD(client *api.Client) error {
+	kv := client.KV()
+
+	root, err := uuid.GenerateUUID()
+	if err != nil {
+		return err
+	}
+
+	_, err = kv.Put(&api.KVPair{Key: root}, nil)
+	if err != nil {
+		return err
+	}
+
+	inner := fmt.Sprintf("%s/inner", root)
+	value := []byte("hello")
+	_, err = kv.Put(&api.KVPair{Key: inner, Value: value}, nil)
+	if err != nil {
+		return err
+	}
+
+	pair, _, err := kv.Get(inner, nil)
+	if err != nil {
+		return err
+	}
+	if pair == nil {
+		return fmt.Errorf("key %q is missing", inner)
+	}
+	if !bytes.Equal(pair.Value, value) {
+		return fmt.Errorf("bad value: %#v", *pair)
+	}
+
+	value = []byte("world")
+	_, err = kv.Put(&api.KVPair{Key: inner, Value: value}, nil)
+	if err != nil {
+		return err
+	}
+
+	pair, _, err = kv.Get(inner, nil)
+	if err != nil {
+		return err
+	}
+	if pair == nil {
+		return fmt.Errorf("key %q is missing", inner)
+	}
+	if !bytes.Equal(pair.Value, value) {
+		return fmt.Errorf("bad value: %#v", *pair)
+	}
+
+	_, err = kv.DeleteTree(root, nil)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func opKeyTree(client *api.Client) error {
+	kv := client.KV()
+
+	root, err := uuid.GenerateUUID()
+	if err != nil {
+		return err
+	}
+
+	_, err = kv.Put(&api.KVPair{Key: root}, nil)
+	if err != nil {
+		return err
+	}
+
+	for i := 0; i < 500; i++ {
+		key := fmt.Sprintf("%s/lots/%d", root, i)
+		buf := make([]byte, 0, 128)
+		rand.Read(buf)
+		_, err = kv.Put(&api.KVPair{Key: key, Value: buf}, nil)
+		if err != nil {
+			return err
+		}
+	}
+
+	_, err = kv.DeleteTree(root, nil)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func opMetrics(client *api.Client) error {
+	agent := client.Agent()
+	_, err := agent.Metrics()
+	return err
+}
+
 func opSnapshot(client *api.Client) error {
 	q := &api.QueryOptions{
 		AllowStale: true,
@@ -230,6 +267,7 @@ func opSnapshot(client *api.Client) error {
 
 func slow(client *api.Client, rate int) error {
 	ops := []func(*api.Client) error{
+		opKeyTree,
 		opGlobalLock,
 		opGlobalServiceRegister,
 		opSnapshot,
@@ -253,6 +291,7 @@ func fast(client *api.Client, rate int) error {
 	ops := []func(*api.Client) error{
 		opKeyCRUD,
 		opGlobalServiceDNSLookup,
+		opMetrics,
 	}
 
 	minTimePerOp := time.Second / time.Duration(rate)
