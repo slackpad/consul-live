@@ -58,6 +58,7 @@ type ServerConfig struct {
 	ACLMasterToken   string `json:"acl_master_token,omitempty"`
 	ACLDatacenter    string `json:"acl_datacenter,omitempty"`
 	ACLDefaultPolicy string `json:"acl_default_policy,omitempty"`
+	RaftProtocol     int    `json:"raft_protocol,omitempty"`
 	LogLevel         string `json:"log_level,omitempty"`
 }
 
@@ -99,6 +100,7 @@ func (c *Upgrade) upgrade(versions []string) error {
 		ACLMasterToken:   "root",
 		ACLDatacenter:    "dc1",
 		ACLDefaultPolicy: "allow",
+		RaftProtocol:     3,
 	})
 	if err != nil {
 		return err
