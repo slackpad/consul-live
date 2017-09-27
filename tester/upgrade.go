@@ -85,7 +85,7 @@ func (c *Upgrade) upgrade(versions []string) error {
 	base := versions[0]
 	versions = versions[1:]
 
-	config, err := ioutil.TempFile(dir, "config.json")
+	config, err := ioutil.TempFile(dir, "config")
 	if err != nil {
 		return err
 	}
@@ -110,12 +110,17 @@ func (c *Upgrade) upgrade(versions []string) error {
 		return err
 	}
 
+	target := config.Name() + ".json"
+	if err := os.Rename(config.Name(), target); err != nil {
+		return err
+	}
+
 	// Start the first version of Consul, which is our base.
 	log.Printf("Starting base Consul from '%s'...\n", base)
 	args := []string{
 		"agent",
 		"-config-file",
-		config.Name(),
+		target,
 	}
 	consul, err := NewConsul(base, args)
 	if err != nil {
