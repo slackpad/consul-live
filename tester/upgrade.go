@@ -85,7 +85,7 @@ func (c *Upgrade) upgrade(versions []string) error {
 	base := versions[0]
 	versions = versions[1:]
 
-	config, err := ioutil.TempFile(dir, "config")
+	config, err := ioutil.TempFile(dir, "config.json")
 	if err != nil {
 		return err
 	}
