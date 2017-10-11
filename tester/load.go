@@ -99,6 +99,14 @@ func (c *Load) Run(args []string) int {
 	return 0
 }
 
+func maybeStale() *api.QueryOptions {
+	var q api.QueryOptions
+	if rand.Intn(50) > 50 {
+		q.AllowStale = true
+	}
+	return &q
+}
+
 func opGlobalLock(client *api.Client) error {
 	opts := &api.LockOptions{
 		Key:          "global",
@@ -234,6 +242,11 @@ func opKeyTree(client *api.Client) error {
 		}
 	}
 
+	_, _, err = kv.List(root, maybeStale())
+	if err != nil {
+		return err
+	}
+
 	_, err = kv.DeleteTree(root, nil)
 	if err != nil {
 		return err
@@ -249,10 +262,7 @@ func opMetrics(client *api.Client) error {
 }
 
 func opSnapshot(client *api.Client) error {
-	q := &api.QueryOptions{
-		AllowStale: true,
-	}
-	snap, _, err := client.Snapshot().Save(q)
+	snap, _, err := client.Snapshot().Save(maybeStale())
 	if err != nil {
 		return err
 	}
