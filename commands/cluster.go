@@ -20,7 +20,16 @@ type Cluster struct {
 
 func (c *Cluster) Help() string {
 	helpText := `
-Usage consul-live cluster -consul=<string> -servers=<int> -server-args=<string> -clients=<int> -client-args=<string>
+Usage consul-live cluster <options>
+
+Options:
+
+-consul=<string>       Consul executable, defaults to "consul" from PATH
+-servers=<int>         Number of servers, defaults to 3
+-server-args=<string>  Additional args to pass to servers, may be given multiple times
+-clients=<int>         Number of clients, defaults to 10
+-client-args=<string>  Additional args to pass to clients, may be given multiple times
+-nice-ports=<bool>     If true, uses the Consul default ports for the first agent, defaults to true
 `
 	return strings.TrimSpace(helpText)
 }
@@ -38,6 +47,7 @@ func (c *Cluster) Run(args []string) int {
 	cmdFlags.Var(&stringsFlag{&cfg.ServerArgs}, "server-args", "")
 	cmdFlags.IntVar(&cfg.Clients, "clients", 10, "")
 	cmdFlags.Var(&stringsFlag{&cfg.ClientArgs}, "client-args", "")
+	cmdFlags.BoolVar(&cfg.NicePorts, "nice-ports", true, "")
 	if err := cmdFlags.Parse(args); err != nil {
 		return 1
 	}

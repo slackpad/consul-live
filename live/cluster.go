@@ -11,6 +11,7 @@ import (
 
 type ClusterConfig struct {
 	Executable string
+	NicePorts  bool
 	Servers    int
 	ServerArgs []string
 	Clients    int
@@ -44,6 +45,7 @@ func NewCluster(cfg *ClusterConfig) (*Cluster, error) {
 		}
 	}()
 
+	var joinPort int
 	baseArgs := func(node string, idx int) []string {
 		dnsPort := ports[5*idx+0]
 		httpPort := ports[5*idx+1]
@@ -53,18 +55,21 @@ func NewCluster(cfg *ClusterConfig) (*Cluster, error) {
 
 		// Set the default ports on the first agent for convenience.
 		if idx == 0 {
-			dnsPort = 8600
-			httpPort = 8500
-			lanPort = 8301
-			wanPort = 8302
-			serverPort = 8300
+			if cfg.NicePorts {
+				dnsPort = 8600
+				httpPort = 8500
+				lanPort = 8301
+				wanPort = 8302
+				serverPort = 8300
+			}
+			joinPort = lanPort
 		}
 
 		args := []string{
 			"agent",
 			"-node", node,
 			"-data-dir", fmt.Sprintf("%s/%s", dir, node),
-			"-retry-join", "127.0.0.1:8301",
+			"-retry-join", fmt.Sprintf("127.0.0.1:%d", joinPort),
 			"-hcl", fmt.Sprintf("ports={dns=%d http=%d serf_lan=%d serf_wan=%d server=%d}",
 				dnsPort, httpPort, lanPort, wanPort, serverPort),
 		}
