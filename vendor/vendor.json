@@ -178,6 +178,12 @@
 			"revisionTime": "2017-10-11T22:52:20Z"
 		},
 		{
+			"checksumSHA1": "lLvSnIuLwqn3ZbX1H4dVtzKuRdU=",
+			"path": "github.com/hashicorp/consul/test/porter",
+			"revision": "0f79922795c2b403f3e7ba4d962286b57a37e137",
+			"revisionTime": "2017-10-12T21:25:57Z"
+		},
+		{
 			"checksumSHA1": "b8F628srIitj5p7Y130xc9k0QWs=",
 			"origin": "github.com/hashicorp/consul/vendor/github.com/hashicorp/go-cleanhttp",
 			"path": "github.com/hashicorp/go-cleanhttp",

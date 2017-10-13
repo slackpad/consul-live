@@ -1,4 +1,4 @@
-package tester
+package commands
 
 import (
 	"encoding/json"
@@ -12,6 +12,7 @@ import (
 	"github.com/hashicorp/consul/api"
 	"github.com/hashicorp/go-getter"
 	"github.com/mitchellh/cli"
+	"github.com/slackpad/consul-live/live"
 )
 
 func UpgradeCommandFactory() (cli.Command, error) {
@@ -42,7 +43,7 @@ func (c *Upgrade) Run(args []string) int {
 		return 1
 	}
 
-	if err := c.upgrade(args); err != nil {
+	if err := c.run(args); err != nil {
 		log.Println(err)
 		return 1
 	}
@@ -62,7 +63,7 @@ type ServerConfig struct {
 	LogLevel         string `json:"log_level,omitempty"`
 }
 
-func (c *Upgrade) upgrade(versions []string) error {
+func (c *Upgrade) run(versions []string) error {
 	var dir string
 	var err error
 	dir, err = ioutil.TempDir("", "consul")
@@ -124,7 +125,7 @@ func (c *Upgrade) upgrade(versions []string) error {
 		"-config-file",
 		target,
 	}
-	consul, err := NewConsul(base, args)
+	consul, err := live.NewConsul(base, args)
 	if err != nil {
 		return err
 	}
@@ -148,7 +149,7 @@ func (c *Upgrade) upgrade(versions []string) error {
 	if err != nil {
 		return err
 	}
-	fuzz, err := NewFuzz(client)
+	fuzz, err := live.NewFuzz(client)
 	if err != nil {
 		return err
 	}
@@ -183,7 +184,7 @@ func (c *Upgrade) upgrade(versions []string) error {
 	for _, version := range versions {
 		// Start the upgraded version with the same data-dir.
 		log.Printf("Upgrading to Consul from '%s'...\n", version)
-		upgrade, err := NewConsul(version, args)
+		upgrade, err := live.NewConsul(version, args)
 		if err != nil {
 			return err
 		}

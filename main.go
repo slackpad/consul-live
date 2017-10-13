@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/mitchellh/cli"
-	"github.com/slackpad/consul-live/tester"
+	"github.com/slackpad/consul-live/commands"
 )
 
 func main() {
@@ -16,9 +16,10 @@ func main() {
 	c := cli.NewCLI("consul-live", "0.0.1")
 	c.Args = os.Args[1:]
 	c.Commands = map[string]cli.CommandFactory{
-		"kill":    tester.KillCommandFactory,
-		"load":    tester.LoadCommandFactory,
-		"upgrade": tester.UpgradeCommandFactory,
+		"cluster": commands.ClusterCommandFactory,
+		"kill":    commands.KillCommandFactory,
+		"load":    commands.LoadCommandFactory,
+		"upgrade": commands.UpgradeCommandFactory,
 	}
 
 	exitStatus, err := c.Run()

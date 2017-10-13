@@ -1,4 +1,4 @@
-package tester
+package commands
 
 import (
 	"flag"
@@ -44,7 +44,7 @@ func (c *Kill) Run(args []string) int {
 		c.Token = token
 		return c
 	}
-	if err := c.kill(config); err != nil {
+	if err := c.run(config); err != nil {
 		log.Println(err)
 		return 1
 	}
@@ -52,7 +52,7 @@ func (c *Kill) Run(args []string) int {
 	return 0
 }
 
-func (c *Kill) kill(config func() *api.Config) error {
+func (c *Kill) run(config func() *api.Config) error {
 	client, err := api.NewClient(config())
 	if err != nil {
 		return err
