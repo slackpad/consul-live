@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"time"
 
 	"github.com/hashicorp/consul/test/porter"
 )
@@ -103,9 +104,15 @@ func NewCluster(cfg *ClusterConfig) (*Cluster, error) {
 }
 
 func (c *Cluster) Start() error {
-	for _, consul := range c.Agents {
+	for i, consul := range c.Agents {
 		if err := consul.Start(); err != nil {
 			return err
+		}
+
+		// Sleep a bit so the later agents will have something to join
+		// to without a backoff.
+		if i == 0 {
+			time.Sleep(3 * time.Second)
 		}
 	}
 	return nil
