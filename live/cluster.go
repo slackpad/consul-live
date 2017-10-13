@@ -70,6 +70,8 @@ func NewCluster(cfg *ClusterConfig) (*Cluster, error) {
 			"-node", node,
 			"-data-dir", fmt.Sprintf("%s/%s", dir, node),
 			"-retry-join", fmt.Sprintf("127.0.0.1:%d", joinPort),
+			"-bind", "127.0.0.1",
+			"-client", "127.0.0.1",
 			"-hcl", fmt.Sprintf("ports={dns=%d http=%d serf_lan=%d serf_wan=%d server=%d}",
 				dnsPort, httpPort, lanPort, wanPort, serverPort),
 		}
