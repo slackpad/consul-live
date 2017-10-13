@@ -46,7 +46,7 @@ func NewCluster(cfg *ClusterConfig) (*Cluster, error) {
 	}()
 
 	var joinPort int
-	baseArgs := func(node string, idx int) []string {
+	baseArgs := func(idx int) []string {
 		dnsPort := ports[5*idx+0]
 		httpPort := ports[5*idx+1]
 		lanPort := ports[5*idx+2]
@@ -65,6 +65,7 @@ func NewCluster(cfg *ClusterConfig) (*Cluster, error) {
 			joinPort = lanPort
 		}
 
+		node := fmt.Sprintf("node-%d", lanPort)
 		args := []string{
 			"agent",
 			"-node", node,
@@ -80,8 +81,7 @@ func NewCluster(cfg *ClusterConfig) (*Cluster, error) {
 
 	var agents []*Consul
 	for i := 0; i < cfg.Servers; i++ {
-		node := fmt.Sprintf("server-%d", i)
-		args := append(baseArgs(node, i), []string{
+		args := append(baseArgs(i), []string{
 			"-server",
 			fmt.Sprintf("-bootstrap-expect=%d", cfg.Servers),
 			"-hcl", "performance={raft_multiplier=1}",
@@ -94,8 +94,7 @@ func NewCluster(cfg *ClusterConfig) (*Cluster, error) {
 		agents = append(agents, consul)
 	}
 	for i := 0; i < cfg.Clients; i++ {
-		node := fmt.Sprintf("client-%d", i)
-		args := append(baseArgs(node, cfg.Servers+i), cfg.ClientArgs...)
+		args := append(baseArgs(cfg.Servers+i), cfg.ClientArgs...)
 		consul, err := NewConsul(cfg.Executable, args)
 		if err != nil {
 			return nil, err
