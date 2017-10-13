@@ -51,7 +51,6 @@ func (c *Cluster) Run(args []string) int {
 	if err := cmdFlags.Parse(args); err != nil {
 		return 1
 	}
-	log.Println(cfg)
 
 	if err := c.run(cfg); err != nil {
 		log.Println(err)
