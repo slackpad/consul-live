@@ -35,7 +35,7 @@ Options:
 }
 
 func (c *Cluster) Synopsis() string {
-	return "Starts up a cluster with the given parameters"
+	return "Starts up a cluster"
 }
 
 func (c *Cluster) Run(args []string) int {

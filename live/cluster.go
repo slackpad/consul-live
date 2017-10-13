@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/hashicorp/consul/api"
 	"github.com/hashicorp/consul/test/porter"
 )
 
@@ -21,6 +22,8 @@ type ClusterConfig struct {
 type Cluster struct {
 	DataDir string
 	Agents  []*Consul
+	Client  *api.Client
+	WANJoin string
 }
 
 func NewCluster(cfg *ClusterConfig) (*Cluster, error) {
@@ -46,6 +49,8 @@ func NewCluster(cfg *ClusterConfig) (*Cluster, error) {
 	}()
 
 	var joinPort int
+	var wanJoin string
+	var client *api.Client
 	baseArgs := func(idx int) []string {
 		dnsPort := ports[5*idx+0]
 		httpPort := ports[5*idx+1]
@@ -63,6 +68,14 @@ func NewCluster(cfg *ClusterConfig) (*Cluster, error) {
 				serverPort = 8300
 			}
 			joinPort = lanPort
+			wanJoin = fmt.Sprintf("127.0.0.1:%d", wanPort)
+
+			cc := api.DefaultConfig()
+			cc.Address = fmt.Sprintf("127.0.0.1:%d", httpPort)
+			client, err = api.NewClient(cc)
+			if err != nil {
+				panic(err)
+			}
 		}
 
 		node := fmt.Sprintf("node-%d", lanPort)
@@ -106,6 +119,8 @@ func NewCluster(cfg *ClusterConfig) (*Cluster, error) {
 	return &Cluster{
 		DataDir: dir,
 		Agents:  agents,
+		Client:  client,
+		WANJoin: wanJoin,
 	}, nil
 }
 
