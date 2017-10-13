@@ -20,7 +20,7 @@ type Cluster struct {
 
 func (c *Cluster) Help() string {
 	helpText := `
-Usage consul-live cluster -servers=<int> -clients=<int>
+Usage consul-live cluster -servers=<int> -server-args=<string> -clients=<int> -client-args=<string>
 `
 	return strings.TrimSpace(helpText)
 }
@@ -36,10 +36,13 @@ func (c *Cluster) Run(args []string) int {
 	cmdFlags := flag.NewFlagSet("cluster", flag.ContinueOnError)
 	cmdFlags.Usage = func() { log.Println(c.Help()) }
 	cmdFlags.IntVar(&cfg.Servers, "servers", 3, "")
+	cmdFlags.Var(&stringsFlag{&cfg.ServerArgs}, "server-args", "")
 	cmdFlags.IntVar(&cfg.Clients, "clients", 10, "")
+	cmdFlags.Var(&stringsFlag{&cfg.ClientArgs}, "client-args", "")
 	if err := cmdFlags.Parse(args); err != nil {
 		return 1
 	}
+	log.Println(cfg)
 
 	if err := c.run(cfg); err != nil {
 		log.Println(err)
