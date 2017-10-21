@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/hashicorp/consul/api"
-	"github.com/hashicorp/consul/test/porter"
+	"github.com/hashicorp/consul/lib/freeport"
 )
 
 type ClusterConfig struct {
@@ -32,11 +32,6 @@ func NewCluster(cfg *ClusterConfig) (*Cluster, error) {
 		return nil, fmt.Errorf("at least one client or server required")
 	}
 
-	ports, err := porter.RandomPorts(5 * n)
-	if err != nil {
-		return nil, err
-	}
-
 	dir, err := ioutil.TempDir("", "cluster")
 	if err != nil {
 		return nil, err
@@ -47,6 +42,8 @@ func NewCluster(cfg *ClusterConfig) (*Cluster, error) {
 			os.RemoveAll(dir)
 		}
 	}()
+
+	ports := freeport.Get(5 * n)
 
 	var joinPort int
 	var wanJoin string
