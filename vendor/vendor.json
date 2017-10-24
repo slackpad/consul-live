@@ -31,7 +31,7 @@
 		{"path":"github.com/bgentry/speakeasy","checksumSHA1":"ta8SSP0z1c4mWWiJc9srvj2WirE=","revision":"a1ccbf2c40dfc8ce514b5c5c6e6d1429ea6880da","revisionTime":"2016-08-13T19:06:34Z"},
 		{"path":"github.com/go-ini/ini","checksumSHA1":"FCeEm2BWZV/n4oTy+SGd/k0Ab5c=","origin":"github.com/aws/aws-sdk-go/vendor/github.com/go-ini/ini","revision":"ed981a1d5ee78d20547091d0697a711e5185d07f","revisionTime":"2016-10-31T21:52:18Z"},
 		{"path":"github.com/hashicorp/consul/api","checksumSHA1":"XLfcIX2qpRr0o26aFMjCOzvw6jo=","revision":"575d70aaa73d6ee2a4e5b8ca8e969ccf5e88a871","revisionTime":"2017-10-11T22:52:20Z"},
-		{"path":"github.com/hashicorp/consul/lib/freeport","checksumSHA1":"KGSAFp4Z5kVxz26Ndvc7QN+XplE=","revision":"c94751ad4390d89b20635aa0297711aab2d0b2f9","revisionTime":"2017-10-21T19:15:01Z"},
+		{"path":"github.com/hashicorp/consul/lib/freeport","checksumSHA1":"XUc/5Wg49jT0dGHRv7FhzDosj2Q=","revision":"be18f97531edb0b75a91e61c7e26a66224a46468","revisionTime":"2017-10-23T23:34:27Z"},
 		{"path":"github.com/hashicorp/consul/test/porter","checksumSHA1":"lLvSnIuLwqn3ZbX1H4dVtzKuRdU=","revision":"0f79922795c2b403f3e7ba4d962286b57a37e137","revisionTime":"2017-10-12T21:25:57Z"},
 		{"path":"github.com/hashicorp/go-cleanhttp","checksumSHA1":"b8F628srIitj5p7Y130xc9k0QWs=","origin":"github.com/hashicorp/consul/vendor/github.com/hashicorp/go-cleanhttp","revision":"fa8a26ad54dfe48aaca0f1b2ef951e49bad96dcb","revisionTime":"2017-06-08T04:16:59Z"},
 		{"path":"github.com/hashicorp/go-getter","checksumSHA1":"hsxl4CD819T5XrPPZFAsZEK36ak=","revision":"833da1c2bd47f5145677b8cafe18636e5d9f83fd","revisionTime":"2016-03-21T21:35:09Z"},
@@ -44,6 +44,7 @@
 		{"path":"github.com/miekg/dns","checksumSHA1":"7C76urB5PLSeqMeydxiUGjX5xMI=","revision":"7e024ce8ce18b21b475ac6baf8fa3c42536bf2fa","revisionTime":"2016-03-28T14:46:43Z"},
 		{"path":"github.com/mitchellh/cli","checksumSHA1":"7niW29CvYceZ6zbia6b/LT+yD/M=","revision":"fcf521421aa29bde1d93b6920dfce826d7932208","revisionTime":"2016-08-15T18:46:15Z"},
 		{"path":"github.com/mitchellh/go-homedir","checksumSHA1":"V/quM7+em2ByJbWBLOsEwnY3j/Q=","origin":"github.com/hashicorp/consul/vendor/github.com/mitchellh/go-homedir","revision":"fa8a26ad54dfe48aaca0f1b2ef951e49bad96dcb","revisionTime":"2017-06-08T04:16:59Z"},
+		{"path":"github.com/mitchellh/go-testing-interface","checksumSHA1":"bDdhmDk8q6utWrccBhEOa6IoGkE=","revision":"a61a99592b77c9ba629d254a693acffaeb4b7e28","revisionTime":"2017-10-04T22:19:16Z"},
 		{"path":"golang.org/x/sys/unix","checksumSHA1":"oS0UZOGWVVsVciOQ8nZJ582mFF8=","revision":"9ccfe848b9db8435a24c424abbc07a921adf1df5","revisionTime":"2017-04-27T03:54:25Z"}
 	],
 	"rootPath": "github.com/slackpad/consul-live"
