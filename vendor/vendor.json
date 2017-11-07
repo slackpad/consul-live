@@ -45,7 +45,15 @@
 		{"path":"github.com/mitchellh/cli","checksumSHA1":"7niW29CvYceZ6zbia6b/LT+yD/M=","revision":"fcf521421aa29bde1d93b6920dfce826d7932208","revisionTime":"2016-08-15T18:46:15Z"},
 		{"path":"github.com/mitchellh/go-homedir","checksumSHA1":"V/quM7+em2ByJbWBLOsEwnY3j/Q=","origin":"github.com/hashicorp/consul/vendor/github.com/mitchellh/go-homedir","revision":"fa8a26ad54dfe48aaca0f1b2ef951e49bad96dcb","revisionTime":"2017-06-08T04:16:59Z"},
 		{"path":"github.com/mitchellh/go-testing-interface","checksumSHA1":"bDdhmDk8q6utWrccBhEOa6IoGkE=","revision":"a61a99592b77c9ba629d254a693acffaeb4b7e28","revisionTime":"2017-10-04T22:19:16Z"},
-		{"path":"golang.org/x/sys/unix","checksumSHA1":"oS0UZOGWVVsVciOQ8nZJ582mFF8=","revision":"9ccfe848b9db8435a24c424abbc07a921adf1df5","revisionTime":"2017-04-27T03:54:25Z"}
+		{"path":"golang.org/x/net/http2","checksumSHA1":"aaproqDPgHPV5s7lKzClAdCaDKQ=","revision":"01c190206fbdffa42f334f4b2bf2220f50e64920","revisionTime":"2017-11-02T18:53:09Z"},
+		{"path":"golang.org/x/net/http2/hpack","checksumSHA1":"ezWhc7n/FtqkLDQKeU2JbW+80tE=","revision":"01c190206fbdffa42f334f4b2bf2220f50e64920","revisionTime":"2017-11-02T18:53:09Z"},
+		{"path":"golang.org/x/net/idna","checksumSHA1":"RcrB7tgYS/GMW4QrwVdMOTNqIU8=","revision":"01c190206fbdffa42f334f4b2bf2220f50e64920","revisionTime":"2017-11-02T18:53:09Z"},
+		{"path":"golang.org/x/net/lex/httplex","checksumSHA1":"3xyuaSNmClqG4YWC7g0isQIbUTc=","revision":"01c190206fbdffa42f334f4b2bf2220f50e64920","revisionTime":"2017-11-02T18:53:09Z"},
+		{"path":"golang.org/x/sys/unix","checksumSHA1":"oS0UZOGWVVsVciOQ8nZJ582mFF8=","revision":"9ccfe848b9db8435a24c424abbc07a921adf1df5","revisionTime":"2017-04-27T03:54:25Z"},
+		{"path":"golang.org/x/text/secure/bidirule","checksumSHA1":"tltivJ/uj/lqLk05IqGfCv2F/E8=","revision":"88f656faf3f37f690df1a32515b479415e1a6769","revisionTime":"2017-10-26T07:52:28Z"},
+		{"path":"golang.org/x/text/transform","checksumSHA1":"ziMb9+ANGRJSSIuxYdRbA+cDRBQ=","revision":"88f656faf3f37f690df1a32515b479415e1a6769","revisionTime":"2017-10-26T07:52:28Z"},
+		{"path":"golang.org/x/text/unicode/bidi","checksumSHA1":"tk+lpF2CDV7e5RwwRY5ZTCGrd9o=","revision":"88f656faf3f37f690df1a32515b479415e1a6769","revisionTime":"2017-10-26T07:52:28Z"},
+		{"path":"golang.org/x/text/unicode/norm","checksumSHA1":"BwRNKgzIMUxk56OScxyr43BV6IE=","revision":"88f656faf3f37f690df1a32515b479415e1a6769","revisionTime":"2017-10-26T07:52:28Z"}
 	],
 	"rootPath": "github.com/slackpad/consul-live"
 }

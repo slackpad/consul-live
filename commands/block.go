@@ -4,12 +4,14 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"os/signal"
 	"strings"
 
 	"github.com/hashicorp/consul/api"
 	"github.com/mitchellh/cli"
+	"golang.org/x/net/http2"
 )
 
 func BlockCommandFactory() (cli.Command, error) {
@@ -52,7 +54,22 @@ func (c *Block) Run(args []string) int {
 }
 
 func (c *Block) run(queries int) error {
-	client, err := api.NewClient(api.DefaultConfig())
+	cfg := api.DefaultConfig()
+	tlsccfg, err := api.SetupTLSConfig(&cfg.TLSConfig)
+	if err != nil {
+		return err
+	}
+
+	transport := cfg.Transport
+	transport.TLSClientConfig = tlsccfg
+	if err := http2.ConfigureTransport(transport); err != nil {
+		return err
+	}
+	cfg.HttpClient = &http.Client{
+		Transport: transport,
+	}
+
+	client, err := api.NewClient(cfg)
 	if err != nil {
 		return err
 	}
