@@ -75,7 +75,7 @@ func NewCluster(cfg *ClusterConfig) (*Cluster, error) {
 			}
 		}
 
-		node := fmt.Sprintf("node-%d", lanPort)
+		node := fmt.Sprintf("node-%d", httpPort)
 		args := []string{
 			"agent",
 			"-node", node,
