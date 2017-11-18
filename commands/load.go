@@ -107,6 +107,11 @@ func maybeStale() *api.QueryOptions {
 	return &q
 }
 
+func opAgentSelf(client *api.Client) error {
+	_, err := client.Agent().Self()
+	return err
+}
+
 func opGlobalLock(client *api.Client) error {
 	opts := &api.LockOptions{
 		Key:          "global",
@@ -299,6 +304,7 @@ func slow(client *api.Client, rate int) error {
 
 func fast(client *api.Client, rate int) error {
 	ops := []func(*api.Client) error{
+		opAgentSelf,
 		opKeyCRUD,
 		opGlobalServiceDNSLookup,
 		opMetrics,
