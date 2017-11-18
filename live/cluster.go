@@ -85,6 +85,7 @@ func NewCluster(cfg *ClusterConfig) (*Cluster, error) {
 			"-client", "127.0.0.1",
 			"-hcl", fmt.Sprintf("ports={dns=%d http=%d serf_lan=%d serf_wan=%d server=%d}",
 				dnsPort, httpPort, lanPort, wanPort, serverPort),
+			"-hcl", "enable_debug=true",
 		}
 		return args
 	}
