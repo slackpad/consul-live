@@ -19,6 +19,7 @@ func main() {
 		"block":      commands.BlockCommandFactory,
 		"cluster":    commands.ClusterCommandFactory,
 		"federation": commands.FederationCommandFactory,
+		"fill":       commands.FillCommandFactory,
 		"kill":       commands.KillCommandFactory,
 		"load":       commands.LoadCommandFactory,
 		"upgrade":    commands.UpgradeCommandFactory,
