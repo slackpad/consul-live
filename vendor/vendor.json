@@ -55,5 +55,5 @@
 		{"path":"golang.org/x/text/unicode/bidi","checksumSHA1":"tk+lpF2CDV7e5RwwRY5ZTCGrd9o=","revision":"88f656faf3f37f690df1a32515b479415e1a6769","revisionTime":"2017-10-26T07:52:28Z"},
 		{"path":"golang.org/x/text/unicode/norm","checksumSHA1":"BwRNKgzIMUxk56OScxyr43BV6IE=","revision":"88f656faf3f37f690df1a32515b479415e1a6769","revisionTime":"2017-10-26T07:52:28Z"}
 	],
-	"rootPath": "github.com/slackpad/consul-live"
+	"rootPath": "github.com/hashicorp/consul-live"
 }

@@ -7,8 +7,8 @@ import (
 	"os/signal"
 	"strings"
 
+	"github.com/hashicorp/consul-live/live"
 	"github.com/mitchellh/cli"
-	"github.com/slackpad/consul-live/live"
 )
 
 func ClusterCommandFactory() (cli.Command, error) {

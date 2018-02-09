@@ -4,8 +4,8 @@ import (
 	"log"
 	"os"
 
+	"github.com/hashicorp/consul-live/commands"
 	"github.com/mitchellh/cli"
-	"github.com/slackpad/consul-live/commands"
 )
 
 func main() {

@@ -9,10 +9,10 @@ import (
 	"path"
 	"strings"
 
+	"github.com/hashicorp/consul-live/live"
 	"github.com/hashicorp/consul/api"
 	"github.com/hashicorp/go-getter"
 	"github.com/mitchellh/cli"
-	"github.com/slackpad/consul-live/live"
 )
 
 func UpgradeCommandFactory() (cli.Command, error) {
