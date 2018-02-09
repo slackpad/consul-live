@@ -151,8 +151,26 @@ func opGlobalServiceRegister(client *api.Client) error {
 	return nil
 }
 
-func opGlobalServiceDNSLookup(client *api.Client) error {
+func opGlobalServiceDNSLookupUDP(client *api.Client) error {
 	c := new(dns.Client)
+
+	m := new(dns.Msg)
+	m.SetQuestion("fuzz-test.service.consul.", dns.TypeSRV)
+	if _, _, err := c.Exchange(m, "127.0.0.1:8600"); err != nil {
+		return err
+	}
+
+	m.SetQuestion("fuzz-test.service.consul.", dns.TypeANY)
+	if _, _, err := c.Exchange(m, "127.0.0.1:8600"); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func opGlobalServiceDNSLookupTCP(client *api.Client) error {
+	c := new(dns.Client)
+	c.Net = "tcp"
 
 	m := new(dns.Msg)
 	m.SetQuestion("fuzz-test.service.consul.", dns.TypeSRV)
@@ -306,7 +324,8 @@ func fast(client *api.Client, rate int) error {
 	ops := []func(*api.Client) error{
 		opAgentSelf,
 		opKeyCRUD,
-		opGlobalServiceDNSLookup,
+		opGlobalServiceDNSLookupUDP,
+		opGlobalServiceDNSLookupTCP,
 		opMetrics,
 	}
 
