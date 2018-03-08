@@ -8,7 +8,7 @@ test: vet
 
 linux:
 	mkdir -p pkg/linux_amd64/
-	GOOS=linux GOARCH=amd64 go build -o pkg/linux_amd64/consul
+	GOOS=linux GOARCH=amd64 go build -o pkg/linux_amd64/consul-live
 
 test-race:
 	$(MAKE) GOTEST_FLAGS=-race
