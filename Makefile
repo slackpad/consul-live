@@ -1,5 +1,7 @@
 SHELL = bash
 
+GOFILES ?= $(shell go list ./... | grep -v /vendor/)
+
 test: vet
 	@echo "--> Running go test"
 	go test ./...
@@ -20,7 +22,7 @@ format:
 
 vet:
 	@echo "--> Running go vet"
-	@go vet -tags '$(GOTAGS)' $(GOFILES); if [ $$? -eq 1 ]; then \
+	@go vet $(GOFILES); if [ $$? -eq 1 ]; then \
 		echo ""; \
 		echo "Vet found suspicious constructs. Please check the reported constructs"; \
 		echo "and fix them if necessary before submitting the code for review."; \
