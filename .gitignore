@@ -23,3 +23,4 @@ consul-live
 *.exe
 *.test
 *.prof
+pkg/
