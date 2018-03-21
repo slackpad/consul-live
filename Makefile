@@ -6,9 +6,13 @@ test: vet
 	@echo "--> Running go test"
 	go test ./...
 
-linux:
-	mkdir -p pkg/linux_amd64/
-	GOOS=linux GOARCH=amd64 go build -o pkg/linux_amd64/consul-live
+bin:
+	mkdir -p bin/
+	GOOS=linux GOARCH=amd64 go build -o bin/consul-live
+
+pkg: bin
+	mkdir -p pkg/
+	tar -czf pkg/consul-live.tar.gz -C bin/ .
 
 test-race:
 	$(MAKE) GOTEST_FLAGS=-race
@@ -29,4 +33,4 @@ vet:
 		exit 1; \
 	fi
 
-.PHONY: linux test test-race cover format vet
+.PHONY: bin pkg test test-race cover format vet
